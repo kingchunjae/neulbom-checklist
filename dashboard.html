@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>늘봄학교 강사 완료현황 — 실무사 대시보드</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  /* 헤더 */
+  .header {
+    background: linear-gradient(135deg, #1a5c3a, #2e7d52);
+    color: white;
+    padding: 20px 28px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left h1 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+  }
+  .header-left p {
+    font-size: 11px;
+    opacity: 0.8;
+    margin-top: 3px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: #69f0ae;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  .live-label {
+    font-size: 11px;
+    opacity: 0.85;
+  }
+  .btn-refresh {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: white;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-refresh:hover { background: rgba(255,255,255,0.3); }
+  .btn-clear {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: rgba(255,80,80,0.25);
+    border: 1px solid rgba(255,120,120,0.4);
+    color: white;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-clear:hover { background: rgba(255,80,80,0.4); }
+
+  /* 요약 통계 */
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    padding: 16px 28px;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 20px;
+    flex: 1;
+    min-width: 130px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .stat-card .num {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-card .lbl {
+    font-size: 11px;
+    color: #888;
+    font-weight: 500;
+  }
+  .stat-card.total .num  { color: #333; }
+  .stat-card.done .num   { color: #2e7d52; }
+  .stat-card.partial .num { color: #e07a20; }
+  .stat-card.none .num   { color: #bbb; }
+
+  /* 업데이트 시각 */
+  .updated-bar {
+    padding: 0 28px 10px;
+    font-size: 11px;
+    color: #999;
+  }
+
+  /* 섹션 타이틀 */
+  .section-title {
+    padding: 4px 28px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 0.3px;
+  }
+
+  /* 강사 카드 그리드 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    padding: 0 28px 32px;
+  }
+
+  .instructor-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border-left: 4px solid #e0e0e0;
+    transition: box-shadow 0.15s;
+  }
+  .instructor-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); }
+
+  .instructor-card.status-all  { border-left-color: #2e7d52; }
+  .instructor-card.status-part { border-left-color: #e07a20; }
+  .instructor-card.status-none { border-left-color: #e0e0e0; }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .card-name {
+    font-size: 15px;
+    font-weight: 900;
+    color: #1a1a2e;
+  }
+  .card-school {
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+  }
+  .status-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-all  { background: #e8f5e9; color: #2e7d52; }
+  .badge-part { background: #fff3e0; color: #e07a20; }
+  .badge-none { background: #f5f5f5; color: #aaa; }
+
+  /* 미니 진행 바 */
+  .mini-bars { display: flex; flex-direction: column; gap: 6px; }
+  .mini-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #777;
+  }
+  .mini-bar-label { width: 36px; flex-shrink: 0; }
+  .mini-bar-track {
+    flex: 1;
+    height: 5px;
+    background: #eee;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .mini-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s;
+  }
+  .fill-1 { background: linear-gradient(90deg, #2e7d52, #5cb88a); }
+  .fill-2 { background: linear-gradient(90deg, #b85c00, #e07a20); }
+  .mini-bar-count { width: 40px; text-align: right; font-size: 10px; flex-shrink: 0; }
+
+  /* 메모 */
+  .card-memo {
+    margin-top: 10px;
+    padding: 7px 10px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #555;
+    line-height: 1.6;
+    border-left: 2px solid #ddd;
+  }
+
+  /* 제출 시각 */
+  .card-time {
+    margin-top: 8px;
+    font-size: 10px;
+    color: #bbb;
+    text-align: right;
+  }
+
+  /* 미제출 카드 */
+  .card-waiting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    font-size: 12px;
+    color: #ccc;
+    font-weight: 500;
+  }
+
+  /* 빈 상태 */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 24px;
+    color: #bbb;
+  }
+  .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+  .empty-state p { font-size: 13px; }
+
+  @media (max-width: 560px) {
+    .header { padding: 16px 16px 14px; }
+    .stats-row, .grid, .section-title, .updated-bar { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>늘봄학교 공개의 날 — 강사 완료현황</h1>
+    <p>2026학년도 1학기 | 광주동초등학교 | 실무사 전용 대시보드</p>
+  </div>
+  <div class="header-right">
+    <div class="live-dot"></div>
+    <span class="live-label">실시간 업데이트</span>
+    <button class="btn-refresh" onclick="loadData()">새로고침</button>
+    <button class="btn-clear" onclick="clearAll()">전체 초기화</button>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card total"><div class="num" id="statTotal">—</div><div class="lbl">전체 강사</div></div>
+  <div class="stat-card done"><div class="num" id="statDone">—</div><div class="lbl">전체 완료</div></div>
+  <div class="stat-card partial"><div class="num" id="statPart">—</div><div class="lbl">일부 완료</div></div>
+  <div class="stat-card none"><div class="num" id="statNone">—</div><div class="lbl">미제출</div></div>
+</div>
+
+<div class="updated-bar" id="updatedBar">마지막 업데이트: —</div>
+
+<div class="section-title">▶ 본교</div>
+<div class="grid" id="grid-main"></div>
+
+<div class="section-title">▶ 분교 (충효분교장)</div>
+<div class="grid" id="grid-branch"></div>
+
+<script>
+  /* ── Firebase 설정 ────────────────────────────────────────────
+     index.html 과 동일한 URL로 교체하세요.
+  ──────────────────────────────────────────────────────────── */
+  const FIREBASE_DB_URL = 'https://neulbom-checklist-default-rtdb.firebaseio.com';
+
+  const INSTRUCTORS = {
+    main: [
+      { name: '김지현',  program: '영어문화부' },
+      { name: '유연경',  program: '바이올린부' },
+      { name: '안지유',  program: '바이올린부' },
+      { name: '이준철',  program: 'AI융합부' },
+      { name: '이수민',  program: '미션클리어' },
+      { name: '한영미',  program: '피아노부' },
+      { name: '박소현',  program: '피아노부' },
+      { name: '송윤기',  program: '뉴스포츠부' },
+      { name: '박선하',  program: '미술부' },
+      { name: '최성은',  program: '초등돌봄교실' },
+    ],
+    branch: [
+      { name: '박미연',  program: '영어문화부' },
+      { name: '신서현',  program: '독서논술부' },
+      { name: '박지은',  program: '풍물부' },
+      { name: '나경관',  program: 'AI융합부' },
+      { name: '김선자',  program: '미술부' },
+      { name: '박정하',  program: '두근두근 디지털' },
+      { name: '정은경',  program: '초등돌봄교실' },
+    ]
+  };
+
+  let allSubmissions = {};
+
+  function formatTime(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mi = String(d.getMinutes()).padStart(2, '0');
+    return mm + '/' + dd + ' ' + hh + ':' + mi;
+  }
+
+  function getLatestForName(name) {
+    let latest = null;
+    for (const key in allSubmissions) {
+      const s = allSubmissions[key];
+      if (s.name === name) {
+        if (!latest || s.submittedAt > latest.submittedAt) latest = s;
+      }
+    }
+    return latest;
+  }
+
+  function pct(done, total) {
+    return total ? Math.round(done / total * 100) : 0;
+  }
+
+  function statusOf(s) {
+    if (!s) return 'none';
+    const allDone = s.p1Done >= s.p1Total && s.p2Done >= s.p2Total;
+    const anyDone = s.p1Done > 0 || s.p2Done > 0;
+    return allDone ? 'all' : anyDone ? 'part' : 'none';
+  }
+
+  function renderCard(instructor, school) {
+    const s = getLatestForName(instructor.name);
+    const status = statusOf(s);
+    const badgeText  = { all: '✅ 전체완료', part: '🔶 진행중', none: '미제출' }[status];
+    const badgeClass = { all: 'badge-all', part: 'badge-part', none: 'badge-none' }[status];
+    const cardClass  = 'instructor-card status-' + status;
+
+    let barsHtml = '';
+    let memoHtml = '';
+    let timeHtml = '';
+
+    if (s) {
+      const p1 = pct(s.p1Done, s.p1Total);
+      const p2 = pct(s.p2Done, s.p2Total);
+      barsHtml = `
+        <div class="mini-bars">
+          <div class="mini-bar-row">
+            <span class="mini-bar-label">1단계</span>
+            <div class="mini-bar-track"><div class="mini-bar-fill fill-1" style="width:${p1}%"></div></div>
+            <span class="mini-bar-count">${s.p1Done}/${s.p1Total}</span>
+          </div>
+          <div class="mini-bar-row">
+            <span class="mini-bar-label">2단계</span>
+            <div class="mini-bar-track"><div class="mini-bar-fill fill-2" style="width:${p2}%"></div></div>
+            <span class="mini-bar-count">${s.p2Done}/${s.p2Total}</span>
+          </div>
+        </div>`;
+      if (s.memo) memoHtml = `<div class="card-memo">💬 ${escHtml(s.memo)}</div>`;
+      timeHtml = `<div class="card-time">제출: ${formatTime(s.submittedAt)}</div>`;
+    } else {
+      barsHtml = `<div class="card-waiting">아직 보고 없음</div>`;
+    }
+
+    return `
+      <div class="${cardClass}">
+        <div class="card-top">
+          <div>
+            <div class="card-name">${escHtml(instructor.name)}</div>
+            <div class="card-school">${escHtml(instructor.program)} · ${school}</div>
+          </div>
+          <span class="status-badge ${badgeClass}">${badgeText}</span>
+        </div>
+        ${barsHtml}
+        ${memoHtml}
+        ${timeHtml}
+      </div>`;
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderAll() {
+    document.getElementById('grid-main').innerHTML =
+      INSTRUCTORS.main.map(i => renderCard(i, '본교')).join('');
+    document.getElementById('grid-branch').innerHTML =
+      INSTRUCTORS.branch.map(i => renderCard(i, '분교')).join('');
+
+    // 통계
+    const allList = [...INSTRUCTORS.main, ...INSTRUCTORS.branch];
+    let done = 0, part = 0, none = 0;
+    for (const ins of allList) {
+      const s = statusOf(getLatestForName(ins.name));
+      if (s === 'all') done++;
+      else if (s === 'part') part++;
+      else none++;
+    }
+    document.getElementById('statTotal').textContent = allList.length;
+    document.getElementById('statDone').textContent  = done;
+    document.getElementById('statPart').textContent  = part;
+    document.getElementById('statNone').textContent  = none;
+    document.getElementById('updatedBar').textContent =
+      '마지막 업데이트: ' + new Date().toLocaleTimeString('ko-KR');
+  }
+
+  async function loadData() {
+    try {
+      const res = await fetch(FIREBASE_DB_URL + '/submissions.json');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      allSubmissions = data || {};
+      renderAll();
+    } catch (e) {
+      document.getElementById('updatedBar').textContent = '⚠️ 데이터 로드 실패: ' + e.message;
+    }
+  }
+
+  async function clearAll() {
+    if (!confirm('모든 제출 현황을 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) return;
+    try {
+      await fetch(FIREBASE_DB_URL + '/submissions.json', { method: 'DELETE' });
+      allSubmissions = {};
+      renderAll();
+    } catch (e) {
+      alert('초기화 실패: ' + e.message);
+    }
+  }
+
+  /* 실시간: Firebase SSE 스트림 */
+  function startStream() {
+    const url = FIREBASE_DB_URL + '/submissions.json';
+    const es = new EventSource(url);
+    es.addEventListener('put', (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.path === '/') {
+          allSubmissions = msg.data || {};
+        } else {
+          const key = msg.path.replace('/', '');
+          if (msg.data === null) {
+            delete allSubmissions[key];
+          } else {
+            allSubmissions[key] = msg.data;
+          }
+        }
+        renderAll();
+      } catch {}
+    });
+    es.addEventListener('patch', (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        Object.assign(allSubmissions, msg.data || {});
+        renderAll();
+      } catch {}
+    });
+    es.onerror = () => {
+      // SSE 끊기면 30초 후 폴링으로 보완
+      setTimeout(loadData, 30000);
+    };
+  }
+
+  startStream();
+  // SSE 연결 전 초기 1회 로드
+  loadData();
+  // 30초마다 폴링으로 보완
+  setInterval(loadData, 30000);
+</script>
+</body>
+</html>

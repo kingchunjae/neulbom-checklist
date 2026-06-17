@@ -268,24 +268,8 @@
     line-height: 2;
   }
   .notice-footer strong { color: #1a5c3a; font-weight: 700; }
-  .notice-footer .sign-area {
-    margin-top: 14px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 32px;
-    font-size: 12px;
-    color: #333;
-  }
-  .notice-footer .sign-line {
-    border-bottom: 1px solid #999;
-    width: 120px;
-    text-align: center;
-    padding-bottom: 2px;
-    font-size: 11px;
-    color: #888;
-  }
 
-  /* 버튼 */
+  /* 버튼 바 */
   .btn-bar {
     display: flex;
     gap: 10px;
@@ -293,6 +277,7 @@
     max-width: 740px;
     margin-left: auto;
     margin-right: auto;
+    flex-wrap: wrap;
   }
   .btn {
     padding: 9px 20px;
@@ -308,11 +293,135 @@
   .btn-green:hover { background: #1f5c3a; }
   .btn-gray { background: white; color: #555; border: 1.5px solid #ccc; }
   .btn-gray:hover { background: #f5f5f5; }
+  .btn-submit {
+    background: #1565c0;
+    color: white;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: pulse 2s infinite;
+  }
+  .btn-submit:hover { background: #0d47a1; animation: none; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(21,101,192,0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(21,101,192,0); }
+  }
+
+  /* 제출 완료 배너 */
+  .submit-banner {
+    display: none;
+    background: #e8f5e9;
+    border: 1.5px solid #4caf50;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    max-width: 740px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 13px;
+    color: #1b5e20;
+    font-weight: 600;
+  }
+  .submit-banner.show { display: block; }
+
+  /* 모달 */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+  .modal h2 {
+    font-size: 17px;
+    font-weight: 900;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+  .modal .modal-sub {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .modal label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 5px;
+  }
+  .modal select, .modal textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #222;
+    margin-bottom: 14px;
+    outline: none;
+  }
+  .modal select:focus, .modal textarea:focus { border-color: #1565c0; }
+  .modal textarea { resize: vertical; min-height: 70px; }
+  .modal-progress-summary {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: #444;
+    line-height: 1.8;
+  }
+  .modal-progress-summary span { font-weight: 700; color: #1a5c3a; }
+  .modal-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .modal-btns .btn-cancel {
+    padding: 9px 18px;
+    border-radius: 6px;
+    background: white;
+    border: 1.5px solid #ccc;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #555;
+  }
+  .modal-btns .btn-confirm {
+    padding: 9px 22px;
+    border-radius: 6px;
+    background: #1565c0;
+    color: white;
+    border: none;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .modal-btns .btn-confirm:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
 
   /* 인쇄 */
   @media print {
     body { background: white; padding: 0; }
-    .btn-bar { display: none; }
+    .btn-bar, .modal-overlay, .submit-banner { display: none !important; }
     .page { border: none; padding: 20px 24px; max-width: 100%; }
     .check-item.done { background: white !important; }
     .check-item.done .item-text { text-decoration: none; color: #222 !important; }
@@ -323,9 +432,15 @@
 </head>
 <body>
 
+<!-- 제출 완료 배너 -->
+<div class="submit-banner" id="submitBanner">
+  ✅ 완료 현황이 늘봄실무사에게 전달되었습니다. 수고하셨습니다!
+</div>
+
 <div class="btn-bar">
   <button class="btn btn-green" onclick="window.print()">🖨️ 인쇄</button>
   <button class="btn btn-gray" onclick="resetAll()">↺ 초기화</button>
+  <button class="btn btn-submit" onclick="openModal()">📤 완료 보고하기</button>
 </div>
 
 <div class="page">
@@ -351,12 +466,7 @@
     <table class="schedule-table">
       <thead>
         <tr>
-          <th>프로그램명</th>
-          <th>공개 일자</th>
-          <th>대상</th>
-          <th>수업 시간</th>
-          <th>장소</th>
-          <th>강사명</th>
+          <th>프로그램명</th><th>공개 일자</th><th>대상</th><th>수업 시간</th><th>장소</th><th>강사명</th>
         </tr>
       </thead>
       <tbody>
@@ -387,12 +497,7 @@
     <table class="schedule-table">
       <thead>
         <tr>
-          <th>프로그램명</th>
-          <th>공개 일자</th>
-          <th>대상</th>
-          <th>수업 시간</th>
-          <th>장소</th>
-          <th>강사명</th>
+          <th>프로그램명</th><th>공개 일자</th><th>대상</th><th>수업 시간</th><th>장소</th><th>강사명</th>
         </tr>
       </thead>
       <tbody>
@@ -414,7 +519,6 @@
       </tbody>
     </table>
   </div>
-
 
   <!-- ===== 1단계 ===== -->
   <div class="phase phase-1" id="phase1">
@@ -496,36 +600,153 @@
     · 학부모 만족도 설문지는 공개주간 종료 후 첫 수업일(6.29.)에 학생들에게 배부 예정입니다.<br>
     · 강사 의견이 포함된 평가 통지서(붙임6)는 <strong>7월 18일(금)</strong>을 목표로 늘봄실무사에게 전달해 주시면 감사하겠습니다.<br>
     · 문의: 늘봄실무사 (☎ 250-2737)
-
   </div>
 
 </div><!-- /page -->
 
+<!-- 완료 보고 모달 -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2>📤 완료 현황 보고</h2>
+    <p class="modal-sub">점검 현황이 늘봄실무사 대시보드에 실시간으로 전달됩니다.</p>
+
+    <div class="modal-progress-summary" id="modalSummary"></div>
+
+    <label for="selName">강사 이름 선택 <span style="color:red">*</span></label>
+    <select id="selName">
+      <option value="">-- 이름을 선택하세요 --</option>
+      <optgroup label="본교">
+        <option>김지현</option>
+        <option>유연경</option>
+        <option>안지유</option>
+        <option>이준철</option>
+        <option>이수민</option>
+        <option>한영미</option>
+        <option>박소현</option>
+        <option>송윤기</option>
+        <option>박선하</option>
+        <option>최성은</option>
+      </optgroup>
+      <optgroup label="분교 (충효분교장)">
+        <option>박미연</option>
+        <option>신서현</option>
+        <option>박지은</option>
+        <option>나경관</option>
+        <option>김선자</option>
+        <option>박정하</option>
+        <option>정은경</option>
+      </optgroup>
+    </select>
+
+    <label for="txtMemo">전달 메모 (선택)</label>
+    <textarea id="txtMemo" placeholder="예) 교구 추가 필요 / 특이사항 없음"></textarea>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-confirm" id="btnConfirm" onclick="submitReport()">제출하기</button>
+    </div>
+  </div>
+</div>
+
 <script>
+  /* ── Firebase 설정 ───────────────────────────────────────────
+     아래 URL을 본인 Firebase Realtime Database URL로 교체하세요.
+     예) https://my-project-default-rtdb.firebaseio.com
+  ──────────────────────────────────────────────────────────── */
+  const FIREBASE_DB_URL = 'https://neulbom-checklist-default-rtdb.firebaseio.com';
+
+  /* ── 체크리스트 ─────────────────────────────────────────────── */
   function toggle(el) {
     el.classList.toggle('done');
     updateAll();
   }
 
-  function updateAll() {
-    // phase 1
-    const p1items = document.querySelectorAll('#phase1 .check-item');
-    const p1done = document.querySelectorAll('#phase1 .check-item.done');
-    const p1pct = p1items.length ? p1done.length / p1items.length * 100 : 0;
-    document.getElementById('p1bar').style.width = p1pct + '%';
-    document.getElementById('p1text').textContent = p1done.length + ' / ' + p1items.length + ' 완료';
+  function getProgress(phaseId) {
+    const items = document.querySelectorAll('#' + phaseId + ' .check-item');
+    const done  = document.querySelectorAll('#' + phaseId + ' .check-item.done');
+    return { done: done.length, total: items.length };
+  }
 
-    // phase 2
-    const p2items = document.querySelectorAll('#phase2 .check-item');
-    const p2done = document.querySelectorAll('#phase2 .check-item.done');
-    const p2pct = p2items.length ? p2done.length / p2items.length * 100 : 0;
+  function updateAll() {
+    const p1 = getProgress('phase1');
+    const p2 = getProgress('phase2');
+    const p1pct = p1.total ? p1.done / p1.total * 100 : 0;
+    document.getElementById('p1bar').style.width = p1pct + '%';
+    document.getElementById('p1text').textContent = p1.done + ' / ' + p1.total + ' 완료';
+    const p2pct = p2.total ? p2.done / p2.total * 100 : 0;
     document.getElementById('p2bar').style.width = p2pct + '%';
-    document.getElementById('p2text').textContent = p2done.length + ' / ' + p2items.length + ' 완료';
+    document.getElementById('p2text').textContent = p2.done + ' / ' + p2.total + ' 완료';
   }
 
   function resetAll() {
     document.querySelectorAll('.check-item').forEach(el => el.classList.remove('done'));
     updateAll();
+  }
+
+  /* ── 모달 ───────────────────────────────────────────────────── */
+  function openModal() {
+    const p1 = getProgress('phase1');
+    const p2 = getProgress('phase2');
+    document.getElementById('modalSummary').innerHTML =
+      '1단계: <span>' + p1.done + ' / ' + p1.total + ' 완료</span> &nbsp;|&nbsp; ' +
+      '2단계: <span>' + p2.done + ' / ' + p2.total + ' 완료</span>';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  document.getElementById('selName').addEventListener('change', function() {
+    document.getElementById('btnConfirm').disabled = !this.value;
+  });
+  document.getElementById('btnConfirm').disabled = true;
+
+  /* ── Firebase 제출 ──────────────────────────────────────────── */
+  async function submitReport() {
+    const name = document.getElementById('selName').value;
+    if (!name) return;
+
+    const btn = document.getElementById('btnConfirm');
+    btn.disabled = true;
+    btn.textContent = '전송 중…';
+
+    const p1 = getProgress('phase1');
+    const p2 = getProgress('phase2');
+
+    const payload = {
+      name,
+      p1Done:  p1.done,
+      p1Total: p1.total,
+      p2Done:  p2.done,
+      p2Total: p2.total,
+      memo:    document.getElementById('txtMemo').value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+
+    try {
+      const res = await fetch(FIREBASE_DB_URL + '/submissions.json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      closeModal();
+      const banner = document.getElementById('submitBanner');
+      banner.classList.add('show');
+      setTimeout(() => banner.classList.remove('show'), 6000);
+      document.getElementById('txtMemo').value = '';
+      document.getElementById('selName').value = '';
+      document.getElementById('btnConfirm').disabled = true;
+    } catch (e) {
+      alert('전송에 실패했습니다. 네트워크 상태를 확인해 주세요.\n(' + e.message + ')');
+      btn.disabled = false;
+      btn.textContent = '제출하기';
+    }
   }
 
   updateAll();
