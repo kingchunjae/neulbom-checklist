@@ -418,6 +418,28 @@
     cursor: not-allowed;
   }
 
+  /* 모바일 */
+  @media (max-width: 480px) {
+    body { padding: 12px 10px 40px; }
+
+    .btn-bar { gap: 8px; }
+    .btn-submit { margin-left: 0; width: 100%; justify-content: center; }
+
+    .page { padding: 20px 16px 28px; }
+
+    .doc-header h1 { font-size: 16px; }
+
+    .schedule-box { padding: 12px 10px; overflow-x: auto; }
+    .schedule-table { min-width: 520px; }
+
+    .phase-header { padding: 10px 14px; font-size: 13px; }
+    .cat-label { padding: 5px 14px; }
+    .check-item { padding: 8px 14px; gap: 8px; }
+    .tag { display: none; }
+
+    .modal { padding: 20px 18px 18px; }
+  }
+
   /* 인쇄 */
   @media print {
     body { background: white; padding: 0; }

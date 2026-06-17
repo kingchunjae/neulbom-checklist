@@ -249,9 +249,27 @@
   .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
   .empty-state p { font-size: 13px; }
 
-  @media (max-width: 560px) {
-    .header { padding: 16px 16px 14px; }
-    .stats-row, .grid, .section-title, .updated-bar { padding-left: 16px; padding-right: 16px; }
+  /* 태블릿 */
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  }
+
+  /* 모바일 */
+  @media (max-width: 480px) {
+    .header { padding: 14px 14px 12px; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .header-left h1 { font-size: 15px; }
+    .header-right { width: 100%; justify-content: space-between; }
+    .btn-refresh, .btn-clear { font-size: 11px; padding: 5px 10px; }
+
+    .stats-row { padding: 12px 14px; gap: 8px; }
+    .stat-card { min-width: calc(50% - 4px); flex: none; padding: 12px 10px; }
+    .stat-card .num { font-size: 24px; }
+
+    .grid { grid-template-columns: 1fr; gap: 10px; padding: 0 14px 24px; }
+    .section-title, .updated-bar { padding-left: 14px; padding-right: 14px; }
+
+    .card-name { font-size: 14px; }
+    .status-badge { font-size: 10px; }
   }
 </style>
 </head>
