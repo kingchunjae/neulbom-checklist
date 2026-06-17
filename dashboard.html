@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>늘봄학교 강사 완료현황 — 실무사 대시보드</title>
+<script src="config.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
 
@@ -260,8 +261,8 @@
 
 <div class="header">
   <div class="header-left">
-    <h1>늘봄학교 공개의 날 — 강사 완료현황</h1>
-    <p>2026학년도 1학기 | 광주동초등학교 | 실무사 전용 대시보드</p>
+    <h1 id="cfg-title">늘봄학교 공개의 날 — 강사 완료현황</h1>
+    <p id="cfg-sub"></p>
   </div>
   <div class="header-right">
     <div class="live-dot"></div>
@@ -291,14 +292,8 @@
   </div>
 </div>
 
-<!-- 날짜 탭 -->
-<div class="date-tabs">
-  <button class="date-tab active" data-date="all"  onclick="selectTab(this)">전체 <span class="tab-count" id="cnt-all"></span></button>
-  <button class="date-tab"        data-date="06/22" onclick="selectTab(this)">6/22(월) <span class="tab-count" id="cnt-0622"></span></button>
-  <button class="date-tab"        data-date="06/23" onclick="selectTab(this)">6/23(화) <span class="tab-count" id="cnt-0623"></span></button>
-  <button class="date-tab"        data-date="06/25" onclick="selectTab(this)">6/25(목) <span class="tab-count" id="cnt-0625"></span></button>
-  <button class="date-tab"        data-date="06/26" onclick="selectTab(this)">6/26(금) <span class="tab-count" id="cnt-0626"></span></button>
-</div>
+<!-- 날짜 탭 (config.js 에서 동적 생성) -->
+<div class="date-tabs" id="dateTabs"></div>
 
 <!-- 요약 통계 -->
 <div class="stats-row">
@@ -318,38 +313,37 @@
 
 <!-- 분교 -->
 <div class="section-wrap" id="wrap-branch">
-  <div class="section-title">▶ 분교 (충효분교장)</div>
+  <div class="section-title" id="branch-title">▶ 분교</div>
   <div class="grid" id="grid-branch"></div>
 </div>
 
 <script>
-  const FIREBASE_DB_URL = 'https://neulbom-checklist-default-rtdb.asia-southeast1.firebasedatabase.app';
+  /* ── config.js 에서 설정 로드 ── */
+  document.getElementById('cfg-title').textContent = '늘봄학교 공개의 날 — 강사 완료현황';
+  document.getElementById('cfg-sub').textContent   = CONFIG.year + ' | ' + CONFIG.schoolName + ' | 실무사 전용 대시보드';
 
-  const INSTRUCTORS = {
-    main: [
-      { name: '김지현', program: '영어문화부',   dates: ['06/22'] },
-      { name: '유연경', program: '바이올린부',   dates: ['06/22'] },
-      { name: '안지유', program: '바이올린부',   dates: ['06/22'] },
-      { name: '이준철', program: 'AI융합부',     dates: ['06/22'] },
-      { name: '최성은', program: '초등돌봄교실', dates: ['06/22'] },
-      { name: '한영미', program: '피아노부',     dates: ['06/23'] },
-      { name: '박소현', program: '피아노부',     dates: ['06/23'] },
-      { name: '송윤기', program: '뉴스포츠부',   dates: ['06/23'] },
-      { name: '박선하', program: '미술부',       dates: ['06/23'] },
-      { name: '이수민', program: '미션클리어',   dates: ['06/26'] },
-    ],
-    branch: [
-      { name: '박미연', program: '영어문화부',        dates: ['06/22'] },
-      { name: '신서현', program: '독서논술부',        dates: ['06/22'] },
-      { name: '정은경', program: '초등돌봄교실',      dates: ['06/22'] },
-      { name: '박지은', program: '풍물부',            dates: ['06/23', '06/25'] },
-      { name: '김선자', program: '미술부',            dates: ['06/23'] },
-      { name: '박정하', program: '두근두근 디지털',   dates: ['06/25'] },
-      { name: '나경관', program: 'AI융합부',          dates: ['06/26'] },
-    ]
-  };
+  // 날짜 탭 생성
+  (function buildTabs() {
+    const wrap = document.getElementById('dateTabs');
+    const allBtn = `<button class="date-tab active" data-date="all" onclick="selectTab(this)">전체 <span class="tab-count" id="cnt-all"></span></button>`;
+    const dateBtns = CONFIG.dates.map(d =>
+      `<button class="date-tab" data-date="${d.value}" onclick="selectTab(this)">${d.label} <span class="tab-count" id="cnt-${d.value.replace('/','')}" ></span></button>`
+    ).join('');
+    wrap.innerHTML = allBtn + dateBtns;
+  })();
 
-  const ALL_INSTRUCTORS = [...INSTRUCTORS.main, ...INSTRUCTORS.branch];
+  const FIREBASE_DB_URL  = CONFIG.firebaseUrl;
+  const ALL_INSTRUCTORS  = CONFIG.instructors;
+  const INSTRUCTORS_MAIN   = CONFIG.instructors.filter(i => i.school === 'main');
+  const INSTRUCTORS_BRANCH = CONFIG.instructors.filter(i => i.school === 'branch');
+
+  // 분교 타이틀 및 섹션 초기 표시
+  if (CONFIG.hasBranch) {
+    document.getElementById('branch-title').textContent = '▶ 분교 (' + CONFIG.branchName + ')';
+  } else {
+    document.getElementById('wrap-branch').classList.add('hidden');
+  }
+
   let allSubmissions = {};
   let currentDate = 'all';
 
@@ -398,12 +392,14 @@
   }
 
   function updateTabCounts() {
-    const dates = ['all', '06/22', '06/23', '06/25', '06/26'];
-    const ids   = ['cnt-all', 'cnt-0622', 'cnt-0623', 'cnt-0625', 'cnt-0626'];
-    dates.forEach((d, i) => {
+    const allDates = ['all', ...CONFIG.dates.map(d => d.value)];
+    const allIds   = ['cnt-all', ...CONFIG.dates.map(d => 'cnt-' + d.value.replace('/', ''))];
+    allDates.forEach((d, i) => {
+      const el = document.getElementById(allIds[i]);
+      if (!el) return;
       const list = filterByDate(ALL_INSTRUCTORS, d);
       const done = list.filter(ins => statusOf(getLatestForName(ins.name)) === 'all').length;
-      document.getElementById(ids[i]).textContent = done + '/' + list.length;
+      el.textContent = done + '/' + list.length;
     });
   }
 
@@ -473,8 +469,8 @@
 
   /* ── 전체 렌더 ── */
   function renderAll() {
-    const filteredMain   = filterByDate(INSTRUCTORS.main,   currentDate);
-    const filteredBranch = filterByDate(INSTRUCTORS.branch, currentDate);
+    const filteredMain   = filterByDate(INSTRUCTORS_MAIN,   currentDate);
+    const filteredBranch = CONFIG.hasBranch ? filterByDate(INSTRUCTORS_BRANCH, currentDate) : [];
     const filtered       = [...filteredMain, ...filteredBranch];
 
     // 섹션 표시/숨김

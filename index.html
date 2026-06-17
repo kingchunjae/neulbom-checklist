@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>늘봄학교 공개의 날 강사 체크리스트</title>
+<script src="config.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
 
@@ -16,431 +17,123 @@
     color: #1a1a2e;
     font-size: 13px;
   }
-
   .page {
-    max-width: 740px;
-    margin: 0 auto;
-    background: white;
-    border: 1px solid #ccc;
+    max-width: 740px; margin: 0 auto;
+    background: white; border: 1px solid #ccc;
     padding: 36px 40px 40px;
   }
-
-  /* 헤더 */
-  .doc-header {
-    text-align: center;
-    border-bottom: 3px double #1a5c3a;
-    padding-bottom: 18px;
-    margin-bottom: 20px;
-  }
+  .doc-header { text-align: center; border-bottom: 3px double #1a5c3a; padding-bottom: 18px; margin-bottom: 20px; }
   .doc-header .badge {
-    display: inline-block;
-    background: #1a5c3a;
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 14px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
+    display: inline-block; background: #1a5c3a; color: white;
+    font-size: 11px; font-weight: 700; padding: 3px 14px;
+    border-radius: 20px; letter-spacing: 0.5px; margin-bottom: 10px;
   }
-  .doc-header h1 {
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-    color: #1a1a2e;
-  }
-  .doc-header p {
-    font-size: 12px;
-    color: #666;
-    margin-top: 6px;
-  }
-
-  /* 안내 박스 */
+  .doc-header h1 { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; color: #1a1a2e; }
+  .doc-header p  { font-size: 12px; color: #666; margin-top: 6px; }
   .intro-box {
-    background: #f0f7f3;
-    border-left: 4px solid #1a5c3a;
-    padding: 12px 16px;
-    margin-bottom: 24px;
-    font-size: 12.5px;
-    line-height: 1.8;
-    color: #2d4a3e;
+    background: #f0f7f3; border-left: 4px solid #1a5c3a;
+    padding: 12px 16px; margin-bottom: 24px;
+    font-size: 12.5px; line-height: 1.8; color: #2d4a3e;
   }
   .intro-box strong { color: #1a5c3a; }
-
-  /* 일정 박스 */
   .schedule-box {
-    border: 1.5px solid #d0e8da;
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    background: #fafffe;
+    border: 1.5px solid #d0e8da; border-radius: 8px;
+    padding: 14px 18px; margin-bottom: 24px; background: #fafffe;
+    overflow-x: auto;
   }
-  .schedule-box .title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a5c3a;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
+  .schedule-box .title { font-size: 12px; font-weight: 700; color: #1a5c3a; margin-bottom: 10px; }
+  .schedule-sub { font-size: 11px; font-weight: 700; color: #1a5c3a; margin: 14px 0 6px 2px; }
+  .schedule-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 480px; }
   .schedule-table th {
-    background: #e8f5ee;
-    color: #1a5c3a;
-    font-weight: 700;
-    padding: 6px 10px;
-    border: 1px solid #c5dece;
-    text-align: center;
+    background: #e8f5ee; color: #1a5c3a; font-weight: 700;
+    padding: 6px 10px; border: 1px solid #c5dece; text-align: center;
   }
-  .schedule-table td {
-    padding: 6px 10px;
-    border: 1px solid #dde;
-    text-align: center;
-    color: #333;
-  }
+  .schedule-table td { padding: 6px 10px; border: 1px solid #dde; text-align: center; color: #333; }
   .schedule-table tr:nth-child(even) td { background: #f7fbf8; }
-
-  /* 단계 섹션 */
-  .phase {
-    margin-bottom: 28px;
-    border: 1.5px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .phase-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    color: white;
-    font-weight: 700;
-    font-size: 14px;
-  }
+  .phase { margin-bottom: 28px; border: 1.5px solid #ddd; border-radius: 8px; overflow: hidden; }
+  .phase-header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; color: white; font-weight: 700; font-size: 14px; }
   .phase-header .phase-num {
-    background: rgba(255,255,255,0.25);
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 900;
-    flex-shrink: 0;
+    background: rgba(255,255,255,0.25); border-radius: 50%;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900; flex-shrink: 0;
   }
-  .phase-header .phase-sub {
-    font-size: 11px;
-    font-weight: 400;
-    opacity: 0.85;
-    margin-top: 1px;
-  }
+  .phase-header .phase-sub { font-size: 11px; font-weight: 400; opacity: 0.85; margin-top: 1px; }
   .phase-1 .phase-header { background: linear-gradient(90deg, #2e7d52, #3a9e6a); }
   .phase-2 .phase-header { background: linear-gradient(90deg, #b85c00, #e07a20); }
-
-  /* 카테고리 */
   .cat-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #555;
-    letter-spacing: 0.5px;
-    background: #f4f4f4;
-    padding: 6px 18px;
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    text-transform: uppercase;
+    font-size: 11px; font-weight: 700; color: #555; letter-spacing: 0.5px;
+    background: #f4f4f4; padding: 6px 18px;
+    border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;
   }
-
-  /* 체크 항목 */
   .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 8px 18px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    transition: background 0.1s;
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 18px; border-bottom: 1px solid #f0f0f0;
+    cursor: pointer; transition: background 0.1s;
   }
   .check-item:last-child { border-bottom: none; }
   .check-item:hover { background: #fafff8; }
   .check-item.done { background: #f0f7f3; }
-  .check-item.done .item-text {
-    color: #aaa;
-    text-decoration: line-through;
-    text-decoration-color: #2e7d52;
-  }
-
+  .check-item.done .item-text { color: #aaa; text-decoration: line-through; text-decoration-color: #2e7d52; }
   .checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #bbb;
-    border-radius: 4px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: transparent;
-    transition: all 0.15s;
-    background: white;
+    width: 18px; height: 18px; border: 2px solid #bbb; border-radius: 4px;
+    flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: transparent; transition: all 0.15s; background: white;
   }
-  .check-item.done .checkbox {
-    background: #2e7d52;
-    border-color: #2e7d52;
-    color: white;
-  }
-
-  .item-text {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #222;
-    flex: 1;
-  }
-  .item-note {
-    font-size: 11px;
-    color: #888;
-    margin-top: 2px;
-  }
-
-  .tag {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-    flex-shrink: 0;
-    margin-top: 3px;
-    white-space: nowrap;
-  }
+  .check-item.done .checkbox { background: #2e7d52; border-color: #2e7d52; color: white; }
+  .item-text  { font-size: 13px; line-height: 1.6; color: #222; flex: 1; }
+  .item-note  { font-size: 11px; color: #888; margin-top: 2px; }
+  .tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; margin-top: 3px; white-space: nowrap; }
   .tag-must { background: #e8f5ee; color: #2e7d52; }
   .tag-imp  { background: #f0f4ff; color: #4a5ca8; }
   .tag-doc  { background: #f5f0ff; color: #6a3fa0; }
-
-  /* 진행률 */
-  .progress-section {
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 12px 18px;
-    margin-top: 6px;
-  }
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 7px;
-  }
-  .progress-bar {
-    height: 7px;
-    background: #e0e0e0;
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .progress-fill-1 {
-    height: 100%;
-    background: linear-gradient(90deg, #2e7d52, #5cb88a);
-    border-radius: 99px;
-    width: 0%;
-    transition: width 0.4s;
-  }
-  .progress-fill-2 {
-    height: 100%;
-    background: linear-gradient(90deg, #b85c00, #e07a20);
-    border-radius: 99px;
-    width: 0%;
-    transition: width 0.4s;
-  }
-
-  /* 하단 안내 */
-  .notice-footer {
-    margin-top: 24px;
-    border-top: 2px solid #e0e0e0;
-    padding-top: 16px;
-    font-size: 12px;
-    color: #555;
-    line-height: 2;
-  }
+  .progress-section { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 18px; margin-top: 6px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 7px; }
+  .progress-bar { height: 7px; background: #e0e0e0; border-radius: 99px; overflow: hidden; }
+  .progress-fill-1 { height: 100%; background: linear-gradient(90deg, #2e7d52, #5cb88a); border-radius: 99px; width: 0%; transition: width 0.4s; }
+  .progress-fill-2 { height: 100%; background: linear-gradient(90deg, #b85c00, #e07a20); border-radius: 99px; width: 0%; transition: width 0.4s; }
+  .notice-footer { margin-top: 24px; border-top: 2px solid #e0e0e0; padding-top: 16px; font-size: 12px; color: #555; line-height: 2; }
   .notice-footer strong { color: #1a5c3a; font-weight: 700; }
-
-  /* 버튼 바 */
-  .btn-bar {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 18px;
-    max-width: 740px;
-    margin-left: auto;
-    margin-right: auto;
-    flex-wrap: wrap;
-  }
-  .btn {
-    padding: 9px 20px;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: background 0.15s;
-  }
+  .btn-bar { display: flex; gap: 10px; margin-bottom: 18px; max-width: 740px; margin-left: auto; margin-right: auto; flex-wrap: wrap; }
+  .btn { padding: 9px 20px; border-radius: 6px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: background 0.15s; }
   .btn-green { background: #2e7d52; color: white; }
   .btn-green:hover { background: #1f5c3a; }
   .btn-gray { background: white; color: #555; border: 1.5px solid #ccc; }
   .btn-gray:hover { background: #f5f5f5; }
-  .btn-submit {
-    background: #1565c0;
-    color: white;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    animation: pulse 2s infinite;
-  }
+  .btn-submit { background: #1565c0; color: white; margin-left: auto; display: flex; align-items: center; gap: 6px; animation: pulse 2s infinite; }
   .btn-submit:hover { background: #0d47a1; animation: none; }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(21,101,192,0.4); }
-    50% { box-shadow: 0 0 0 6px rgba(21,101,192,0); }
-  }
-
-  /* 제출 완료 배너 */
-  .submit-banner {
-    display: none;
-    background: #e8f5e9;
-    border: 1.5px solid #4caf50;
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 18px;
-    max-width: 740px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 13px;
-    color: #1b5e20;
-    font-weight: 600;
-  }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(21,101,192,0.4)} 50%{box-shadow:0 0 0 6px rgba(21,101,192,0)} }
+  .submit-banner { display: none; background: #e8f5e9; border: 1.5px solid #4caf50; border-radius: 8px; padding: 14px 18px; margin-bottom: 18px; max-width: 740px; margin-left: auto; margin-right: auto; font-size: 13px; color: #1b5e20; font-weight: 600; }
   .submit-banner.show { display: block; }
-
-  /* 모달 */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal {
-    background: white;
-    border-radius: 12px;
-    padding: 28px 28px 24px;
-    width: 90%;
-    max-width: 420px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  }
-  .modal h2 {
-    font-size: 17px;
-    font-weight: 900;
-    color: #1a1a2e;
-    margin-bottom: 6px;
-  }
-  .modal .modal-sub {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 20px;
-    line-height: 1.6;
-  }
-  .modal label {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    color: #444;
-    margin-bottom: 5px;
-  }
-  .modal select, .modal textarea {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1.5px solid #ddd;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 13px;
-    color: #222;
-    margin-bottom: 14px;
-    outline: none;
-  }
+  .modal { background: white; border-radius: 12px; padding: 28px 28px 24px; width: 90%; max-width: 420px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+  .modal h2 { font-size: 17px; font-weight: 900; color: #1a1a2e; margin-bottom: 6px; }
+  .modal .modal-sub { font-size: 12px; color: #888; margin-bottom: 20px; line-height: 1.6; }
+  .modal label { display: block; font-size: 12px; font-weight: 700; color: #444; margin-bottom: 5px; }
+  .modal select, .modal textarea { width: 100%; padding: 9px 12px; border: 1.5px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 13px; color: #222; margin-bottom: 14px; outline: none; }
   .modal select:focus, .modal textarea:focus { border-color: #1565c0; }
   .modal textarea { resize: vertical; min-height: 70px; }
-  .modal-progress-summary {
-    background: #f5f5f5;
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-bottom: 16px;
-    font-size: 12px;
-    color: #444;
-    line-height: 1.8;
-  }
+  .modal-progress-summary { background: #f5f5f5; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #444; line-height: 1.8; }
   .modal-progress-summary span { font-weight: 700; color: #1a5c3a; }
-  .modal-btns {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-  }
-  .modal-btns .btn-cancel {
-    padding: 9px 18px;
-    border-radius: 6px;
-    background: white;
-    border: 1.5px solid #ccc;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #555;
-  }
-  .modal-btns .btn-confirm {
-    padding: 9px 22px;
-    border-radius: 6px;
-    background: #1565c0;
-    color: white;
-    border: none;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .modal-btns .btn-confirm:disabled {
-    background: #aaa;
-    cursor: not-allowed;
-  }
+  .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal-btns .btn-cancel { padding: 9px 18px; border-radius: 6px; background: white; border: 1.5px solid #ccc; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: #555; }
+  .modal-btns .btn-confirm { padding: 9px 22px; border-radius: 6px; background: #1565c0; color: white; border: none; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .modal-btns .btn-confirm:disabled { background: #aaa; cursor: not-allowed; }
 
-  /* 모바일 */
   @media (max-width: 480px) {
     body { padding: 12px 10px 40px; }
-
     .btn-bar { gap: 8px; }
     .btn-submit { margin-left: 0; width: 100%; justify-content: center; }
-
     .page { padding: 20px 16px 28px; }
-
     .doc-header h1 { font-size: 16px; }
-
-    .schedule-box { padding: 12px 10px; overflow-x: auto; }
-    .schedule-table { min-width: 520px; }
-
     .phase-header { padding: 10px 14px; font-size: 13px; }
     .cat-label { padding: 5px 14px; }
     .check-item { padding: 8px 14px; gap: 8px; }
     .tag { display: none; }
-
     .modal { padding: 20px 18px 18px; }
   }
-
-  /* 인쇄 */
   @media print {
     body { background: white; padding: 0; }
     .btn-bar, .modal-overlay, .submit-banner { display: none !important; }
@@ -454,119 +147,54 @@
 </head>
 <body>
 
-<!-- 제출 완료 배너 -->
 <div class="submit-banner" id="submitBanner">
   ✅ 완료 현황이 늘봄실무사님께 전달되었습니다. 수고하셨습니다!
 </div>
 
 <div class="btn-bar">
   <button class="btn btn-green" onclick="window.print()">🖨️ 인쇄</button>
-  <button class="btn btn-gray" onclick="resetAll()">↺ 초기화</button>
+  <button class="btn btn-gray"  onclick="resetAll()">↺ 초기화</button>
   <button class="btn btn-submit" onclick="openModal()">📤 완료 보고하기</button>
 </div>
 
 <div class="page">
-
-  <!-- 문서 헤더 -->
   <div class="doc-header">
     <div class="badge">늘봄학교 강사 안내</div>
-    <h1>2026학년도 1학기 늘봄학교 공개의 날<br>강사 준비 체크리스트</h1>
-    <p>공개 기간: 2026년 6월 22일(월) ~ 6월 26일(금) &nbsp;|&nbsp; 광주동초등학교</p>
+    <h1 id="cfg-title"></h1>
+    <p id="cfg-period"></p>
   </div>
 
-  <!-- 안내문 -->
   <div class="intro-box">
     안녕하세요, 강사님. 이번 <strong>늘봄학교 공개의 날</strong>은 학부모님께서 자녀의 수업 활동을 직접 참관하시는 날입니다.<br>
     아래 체크리스트를 참고하여 <strong>교실 환경과 수업 준비 상태</strong>를 단계별로 스스로 점검해 보시기 바랍니다.<br>
     준비 과정에서 필요한 사항이 있으시면 편하게 늘봄실무사님께 말씀해 주세요.
   </div>
 
-  <!-- 공개 일정 -->
   <div class="schedule-box">
     <div class="title">📅 강사별 공개 일정 확인 (해당 프로그램 및 시간 확인)</div>
-    <div style="font-size:11px; font-weight:700; color:#1a5c3a; margin:0 0 6px 2px;">▶ 본교</div>
-    <table class="schedule-table">
-      <thead>
-        <tr>
-          <th>프로그램명</th><th>공개 일자</th><th>대상</th><th>수업 시간</th><th>장소</th><th>강사명</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>영어문화부</td><td>6.22.(월)</td><td>1~2학년</td><td>15:25~16:05</td><td>3층 영어실</td><td>김지현</td></tr>
-        <tr><td></td><td></td><td>3~4학년</td><td>13:55~14:35</td><td></td><td></td></tr>
-        <tr><td></td><td></td><td>5~6학년</td><td>14:40~15:20</td><td></td><td></td></tr>
-        <tr><td>바이올린부</td><td>6.22.(월)</td><td>1학년</td><td>13:55~14:35</td><td>3층 음악실</td><td>유연경, 안지유</td></tr>
-        <tr><td></td><td></td><td>2~3학년</td><td>14:40~15:20</td><td></td><td></td></tr>
-        <tr><td></td><td></td><td>4~6학년</td><td>15:25~16:05</td><td></td><td></td></tr>
-        <tr><td>AI융합부</td><td>6.22.(월)</td><td>3학년</td><td>15:25~16:05</td><td>3층 AI실</td><td>이준철</td></tr>
-        <tr><td></td><td></td><td>4학년</td><td>14:40~15:20</td><td></td><td></td></tr>
-        <tr><td>미션클리어</td><td>6.26.(금)</td><td>3학년</td><td>15:25~16:05</td><td>3층 AI실</td><td>이수민</td></tr>
-        <tr><td></td><td></td><td>4학년</td><td>14:40~15:20</td><td></td><td></td></tr>
-        <tr><td>피아노부</td><td>6.23.(화)</td><td>1학년</td><td>13:55~14:35</td><td>3층 음악실, 1층 유치원실</td><td>한영미, 박소현</td></tr>
-        <tr><td></td><td></td><td>2~3학년</td><td>14:40~15:20</td><td></td><td></td></tr>
-        <tr><td></td><td></td><td>4~6학년</td><td>15:25~16:05</td><td></td><td></td></tr>
-        <tr><td>뉴스포츠부</td><td>6.23.(화)</td><td>1학년</td><td>13:10~13:50</td><td>2층 강당</td><td>송윤기</td></tr>
-        <tr><td></td><td></td><td>2~3학년</td><td>13:55~14:35</td><td></td><td></td></tr>
-        <tr><td></td><td></td><td>4~6학년</td><td>14:40~15:20</td><td></td><td></td></tr>
-        <tr><td>미술부</td><td>6.23.(화)</td><td>1학년</td><td>14:40~15:20</td><td>3층 미술실</td><td>박선하</td></tr>
-        <tr><td></td><td></td><td>2~3학년</td><td>15:25~16:05</td><td></td><td></td></tr>
-        <tr><td>초등돌봄교실</td><td>6.22.(월)</td><td>1학년</td><td>14:30~15:10</td><td>2층 돌봄실</td><td>최성은</td></tr>
-        <tr><td></td><td></td><td>2학년</td><td>13:55~14:35</td><td></td><td></td></tr>
-      </tbody>
-    </table>
-
-    <div style="font-size:11px; font-weight:700; color:#1a5c3a; margin:14px 0 6px 2px;">▶ 분교 (충효분교장)</div>
-    <table class="schedule-table">
-      <thead>
-        <tr>
-          <th>프로그램명</th><th>공개 일자</th><th>대상</th><th>수업 시간</th><th>장소</th><th>강사명</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>영어문화부</td><td>6.22.(월)</td><td>1~2학년</td><td>13:40~14:20</td><td>과학실</td><td>박미연</td></tr>
-        <tr><td></td><td></td><td>3~4학년</td><td>15:15~15:55</td><td></td><td></td></tr>
-        <tr><td></td><td></td><td>5~6학년</td><td>14:30~15:10</td><td></td><td></td></tr>
-        <tr><td>독서논술부</td><td>6.22.(월)</td><td>3~4학년</td><td>14:30~15:10</td><td>AI꿈마루</td><td>신서현</td></tr>
-        <tr><td></td><td></td><td>5~6학년</td><td>15:15~15:55</td><td></td><td></td></tr>
-        <tr><td>풍물부</td><td>6.23.(화)</td><td>1~2학년</td><td>13:40~14:20</td><td>강당</td><td>박지은</td></tr>
-        <tr><td></td><td>6.25.(목)</td><td>3~4학년</td><td>14:30~15:10</td><td></td><td></td></tr>
-        <tr><td></td><td>6.23.(화)</td><td>5~6학년</td><td>14:30~15:10</td><td></td><td></td></tr>
-        <tr><td>AI융합부</td><td>6.26.(금)</td><td>3~4학년</td><td>13:40~14:20</td><td>AI꿈마루</td><td>나경관</td></tr>
-        <tr><td></td><td></td><td>5~6학년</td><td>15:15~15:55</td><td></td><td></td></tr>
-        <tr><td>미술부</td><td>6.23.(화)</td><td>1~2학년</td><td>14:30~15:10</td><td>과학실</td><td>김선자</td></tr>
-        <tr><td></td><td></td><td>3~4학년</td><td>13:40~14:20</td><td></td><td></td></tr>
-        <tr><td>두근두근 디지털<br>친구들과 첫만남</td><td>6.25.(목)</td><td>1~2학년</td><td>14:30~15:10</td><td>AI꿈마루</td><td>박정하</td></tr>
-        <tr><td>초등돌봄교실</td><td>6.22.(월)</td><td>1~2학년</td><td>14:30~15:10</td><td>돌봄실</td><td>정은경</td></tr>
-        <tr><td></td><td></td><td>3~4학년</td><td>13:40~14:20</td><td></td><td></td></tr>
-      </tbody>
-    </table>
+    <div id="schedule-main-wrap"></div>
+    <div id="schedule-branch-wrap"></div>
   </div>
 
   <!-- ===== 1단계 ===== -->
   <div class="phase phase-1" id="phase1">
     <div class="phase-header">
       <div class="phase-num">1</div>
-      <div>
-        공개 1주일 전 확인 체크리스트
-        <div class="phase-sub">공개수업 7일 전부터 전날까지 순서대로 점검해 보세요</div>
-      </div>
+      <div>공개 1주일 전 확인 체크리스트<div class="phase-sub">공개수업 7일 전부터 전날까지 순서대로 점검해 보세요</div></div>
     </div>
-
     <div class="cat-label">🏫 교실 환경 정리</div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">교실 전체 청결 및 정리 상태 점검</div><div class="item-note">바닥, 책상, 선반, 수납장 포함</div></div><div class="tag tag-must">점검</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">게시판 및 벽면 전시물 정돈</div><div class="item-note">낡거나 훼손된 게시물 교체, 학생 작품에 이름표 부착 확인</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">교구장·수납함 정리 정돈</div><div class="item-note">불필요한 물품 정리, 교구 카테고리별 정리</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">파손·불량 시설 확인 → 필요시 늘봄실무사님께 전달</div><div class="item-note">의자·책상 파손, 조명 불량, 콘센트 이상 등</div></div><div class="tag tag-must">점검</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">학부모 참관 공간 확보 및 필요시 의자 요청</div><div class="item-note">후면 또는 측면 공간 확보, 통로 동선 확인</div></div><div class="tag tag-must">점검</div></div>
-
     <div class="cat-label">📚 수업 준비</div>
-    <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">수업 지도안 완성 상태 확인 및 늘봄실무사 제출</div><div class="item-note">학교 홈페이지·밴드 탑재를 위해 공개일 3일 전까지 전달해 주시면 좋습니다</div></div><div class="tag tag-doc">서류</div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">수업 지도안 완성 상태 확인 및 늘봄실무사님께 제출</div><div class="item-note">학교 홈페이지·밴드 탑재를 위해 공개일 3일 전까지 전달해 주시면 좋습니다</div></div><div class="tag tag-doc">서류</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">수업 전체 흐름(도입-전개-마무리) 시나리오 확인</div><div class="item-note">학부모 참관을 의식한 수업 의도 설명 멘트 준비</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">필요 교구·재료 수량 확인 (부족 시 늘봄실무사님께 말씀해 주세요)</div><div class="item-note">수강 학생 수 기준 확인, 부족한 경우 늘봄실무사님께 미리 말씀해 주세요</div></div><div class="tag tag-must">점검</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">활동지·인쇄물 출력 여부 확인</div><div class="item-note">학생 수에 맞게 준비</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">PPT·영상 자료 저장 및 백업 여부 확인</div><div class="item-note">USB 또는 클라우드(구글드라이브 등) 이중 백업 권장</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">전자기기(TV·노트북·빔프로젝터) 작동 여부 사전 확인</div><div class="item-note">연결 케이블, 음향, 화면 출력 확인</div></div><div class="tag tag-must">점검</div></div>
-
     <div class="cat-label">👤 강사 개인 준비</div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">복장 준비 (단정하고 활동하기 편한 복장)</div><div class="item-note">프로그램 특성 고려(체육·미술 등)</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">자기소개 및 프로그램 설명 멘트 준비</div><div class="item-note">학부모 앞에서 30초~1분 내외로 간결하게 소개 가능하도록</div></div><div class="tag tag-imp">확인</div></div>
@@ -576,35 +204,26 @@
   <div class="progress-section">
     <div class="progress-label"><span>1단계 진행률</span><span id="p1text">0 / 0 완료</span></div>
     <div class="progress-bar"><div class="progress-fill-1" id="p1bar"></div></div>
-  </div>
-
-  <br>
+  </div><br>
 
   <!-- ===== 2단계 ===== -->
   <div class="phase phase-2" id="phase2">
     <div class="phase-header">
       <div class="phase-num">2</div>
-      <div>
-        수업 당일 — 30분 전 최종 세팅 완료 체크리스트
-        <div class="phase-sub">항목을 하나씩 확인하며 여유롭게 마무리해 보세요</div>
-      </div>
+      <div>수업 당일 — 30분 전 최종 세팅 완료 체크리스트<div class="phase-sub">항목을 하나씩 확인하며 여유롭게 마무리해 보세요</div></div>
     </div>
-
     <div class="cat-label">🏫 공간·환경</div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">교실 청결 및 정돈 상태 최종 점검</div><div class="item-note">바닥 쓸기, 칠판·화이트보드 정리</div></div><div class="tag tag-must">점검</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">교실 환기 여부 확인 (수업 시작 10분 전 창문 닫기)</div><div class="item-note">쾌적한 실내 공기 조성</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">학부모 참관 의자 배치 상태 확인</div><div class="item-note">시야 확보, 통로 동선 정리</div></div><div class="tag tag-must">점검</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">조명 밝기 및 냉난방 상태 확인</div><div class="item-note">참관 인원 증가를 고려하여 냉방 미리 가동</div></div><div class="tag tag-imp">확인</div></div>
-
     <div class="cat-label">🖥️ 기자재·자료</div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">수업 시작 화면 대기 상태 확인</div><div class="item-note">PPT 1번 슬라이드 또는 환영 화면 표시</div></div><div class="tag tag-must">점검</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">마이크·음향 볼륨 최종 확인</div><div class="item-note">참관 인원 포함 전체에 들릴 수 있는 음량 확인</div></div><div class="tag tag-imp">확인</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">활동지·교구 배부 준비 상태 확인</div><div class="item-note">학생별·모둠별 배치 또는 배부 순서 확인</div></div><div class="tag tag-must">점검</div></div>
-
     <div class="cat-label">📄 서류 준비</div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">등록부(붙임3) 교실 입구 비치 여부 확인</div><div class="item-note">볼펜 함께 비치</div></div><div class="tag tag-doc">서류</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">참관록(붙임4) 강사명 기재 후 교실 내 비치 여부 확인</div><div class="item-note">학부모가 수업 후 자유롭게 작성할 수 있도록 비치</div></div><div class="tag tag-doc">서류</div></div>
-
     <div class="cat-label">✅ 수업 종료 후 처리</div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">등록부·참관록 회수 후 늘봄실무사님께 전달</div><div class="item-note">당일 수업 종료 후 전달해 주시면 됩니다</div></div><div class="tag tag-doc">서류</div></div>
     <div class="check-item" onclick="toggle(this)"><div class="checkbox">✓</div><div class="item-content"><div class="item-text">학부모 개인 상담 요청이 있을 경우 별도 일정으로 안내</div><div class="item-note">수업 중 개별 면담은 정중히 양해를 구하고, 추후 일정을 안내해 주시면 됩니다</div></div><div class="tag tag-imp">확인</div></div>
@@ -615,54 +234,19 @@
     <div class="progress-bar"><div class="progress-fill-2" id="p2bar"></div></div>
   </div>
 
-  <!-- 하단 안내 -->
-  <div class="notice-footer">
-    <strong>※ 참고 사항</strong><br>
-    · 공개 일정 변경이나 특이사항이 생기면 늘봄실무사님께 알려주세요.<br>
-    · 학부모 만족도 설문지는 공개주간 종료 후 첫 수업일(6.29.)에 학생들에게 배부 예정입니다.<br>
-    · 강사 의견이 포함된 평가 통지서(붙임6)는 <strong>7월 18일(금)</strong>을 목표로 늘봄실무사님께 전달해 주시면 감사하겠습니다.<br>
-    · 문의: 늘봄실무사 (☎ 250-2737)
-  </div>
-
-</div><!-- /page -->
+  <div class="notice-footer" id="cfg-footer"></div>
+</div>
 
 <!-- 완료 보고 모달 -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h2>📤 완료 현황 보고</h2>
-    <p class="modal-sub">점검 현황이 늘봄실무사 대시보드에 실시간으로 전달됩니다.</p>
-
+    <p class="modal-sub">점검 현황이 늘봄실무사님 대시보드에 실시간으로 전달됩니다.</p>
     <div class="modal-progress-summary" id="modalSummary"></div>
-
     <label for="selName">강사 이름 선택 <span style="color:red">*</span></label>
-    <select id="selName">
-      <option value="">-- 이름을 선택하세요 --</option>
-      <optgroup label="본교">
-        <option>김지현</option>
-        <option>유연경</option>
-        <option>안지유</option>
-        <option>이준철</option>
-        <option>이수민</option>
-        <option>한영미</option>
-        <option>박소현</option>
-        <option>송윤기</option>
-        <option>박선하</option>
-        <option>최성은</option>
-      </optgroup>
-      <optgroup label="분교 (충효분교장)">
-        <option>박미연</option>
-        <option>신서현</option>
-        <option>박지은</option>
-        <option>나경관</option>
-        <option>김선자</option>
-        <option>박정하</option>
-        <option>정은경</option>
-      </optgroup>
-    </select>
-
+    <select id="selName"></select>
     <label for="txtMemo">전달 메모 (선택)</label>
     <textarea id="txtMemo" placeholder="예) 교구 추가 필요 / 특이사항 없음"></textarea>
-
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">취소</button>
       <button class="btn-confirm" id="btnConfirm" onclick="submitReport()">제출하기</button>
@@ -671,17 +255,57 @@
 </div>
 
 <script>
-  /* ── Firebase 설정 ───────────────────────────────────────────
-     아래 URL을 본인 Firebase Realtime Database URL로 교체하세요.
-     예) https://my-project-default-rtdb.firebaseio.com
-  ──────────────────────────────────────────────────────────── */
-  const FIREBASE_DB_URL = 'https://neulbom-checklist-default-rtdb.asia-southeast1.firebasedatabase.app';
+  /* ── config.js 로부터 동적 렌더링 ─────────────────────────────── */
 
-  /* ── 체크리스트 ─────────────────────────────────────────────── */
-  function toggle(el) {
-    el.classList.toggle('done');
-    updateAll();
+  // 헤더
+  document.getElementById('cfg-title').innerHTML =
+    CONFIG.year + ' 늘봄학교 공개의 날<br>강사 준비 체크리스트';
+  document.getElementById('cfg-period').textContent =
+    '공개 기간: ' + CONFIG.periodStart + ' ~ ' + CONFIG.periodEnd + '  |  ' + CONFIG.schoolName;
+
+  // 하단 안내
+  document.getElementById('cfg-footer').innerHTML = `
+    <strong>※ 참고 사항</strong><br>
+    · 공개 일정 변경이나 특이사항이 생기면 늘봄실무사님께 알려주세요.<br>
+    · 학부모 만족도 설문지는 공개주간 종료 후 첫 수업일(${CONFIG.satisfactionDate})에 학생들에게 배부 예정입니다.<br>
+    · 강사 의견이 포함된 평가 통지서(붙임6)는 <strong>${CONFIG.evalDeadline}</strong>을 목표로 늘봄실무사님께 전달해 주시면 감사하겠습니다.<br>
+    · 문의: 늘봄실무사님 (☎ ${CONFIG.contact})`;
+
+  // 일정표 빌더
+  function buildTableRows(rows) {
+    return rows.map(r => `<tr>
+      <td>${r.program.replace(/\n/g, '<br>')}</td>
+      <td>${r.date}</td><td>${r.target}</td>
+      <td>${r.time}</td><td>${r.place}</td>
+      <td>${r.instructor}</td>
+    </tr>`).join('');
   }
+  const tableHead = `<table class="schedule-table"><thead><tr>
+    <th>프로그램명</th><th>공개 일자</th><th>대상</th><th>수업 시간</th><th>장소</th><th>강사명</th>
+  </tr></thead><tbody>`;
+
+  document.getElementById('schedule-main-wrap').innerHTML =
+    `<div class="schedule-sub">▶ 본교</div>${tableHead}${buildTableRows(CONFIG.scheduleMain)}</tbody></table>`;
+
+  if (CONFIG.hasBranch) {
+    document.getElementById('schedule-branch-wrap').innerHTML =
+      `<div class="schedule-sub">▶ 분교 (${CONFIG.branchName})</div>${tableHead}${buildTableRows(CONFIG.scheduleBranch)}</tbody></table>`;
+  }
+
+  // 강사 선택 드롭다운
+  (function buildSelect() {
+    const main   = CONFIG.instructors.filter(i => i.school === 'main');
+    const branch = CONFIG.instructors.filter(i => i.school === 'branch');
+    let html = '<option value="">-- 이름을 선택하세요 --</option>';
+    if (main.length)
+      html += `<optgroup label="본교">${main.map(i=>`<option>${i.name}</option>`).join('')}</optgroup>`;
+    if (CONFIG.hasBranch && branch.length)
+      html += `<optgroup label="분교 (${CONFIG.branchName})">${branch.map(i=>`<option>${i.name}</option>`).join('')}</optgroup>`;
+    document.getElementById('selName').innerHTML = html;
+  })();
+
+  /* ── 체크리스트 로직 ─────────────────────────────────────────── */
+  function toggle(el) { el.classList.toggle('done'); updateAll(); }
 
   function getProgress(phaseId) {
     const items = document.querySelectorAll('#' + phaseId + ' .check-item');
@@ -690,71 +314,39 @@
   }
 
   function updateAll() {
-    const p1 = getProgress('phase1');
-    const p2 = getProgress('phase2');
-    const p1pct = p1.total ? p1.done / p1.total * 100 : 0;
-    document.getElementById('p1bar').style.width = p1pct + '%';
+    const p1 = getProgress('phase1'), p2 = getProgress('phase2');
+    document.getElementById('p1bar').style.width  = (p1.total ? p1.done/p1.total*100 : 0) + '%';
     document.getElementById('p1text').textContent = p1.done + ' / ' + p1.total + ' 완료';
-    const p2pct = p2.total ? p2.done / p2.total * 100 : 0;
-    document.getElementById('p2bar').style.width = p2pct + '%';
+    document.getElementById('p2bar').style.width  = (p2.total ? p2.done/p2.total*100 : 0) + '%';
     document.getElementById('p2text').textContent = p2.done + ' / ' + p2.total + ' 완료';
   }
 
-  function resetAll() {
-    document.querySelectorAll('.check-item').forEach(el => el.classList.remove('done'));
-    updateAll();
-  }
+  function resetAll() { document.querySelectorAll('.check-item').forEach(el => el.classList.remove('done')); updateAll(); }
 
   /* ── 모달 ───────────────────────────────────────────────────── */
   function openModal() {
-    const p1 = getProgress('phase1');
-    const p2 = getProgress('phase2');
+    const p1 = getProgress('phase1'), p2 = getProgress('phase2');
     document.getElementById('modalSummary').innerHTML =
-      '1단계: <span>' + p1.done + ' / ' + p1.total + ' 완료</span> &nbsp;|&nbsp; ' +
-      '2단계: <span>' + p2.done + ' / ' + p2.total + ' 완료</span>';
+      '1단계: <span>' + p1.done + ' / ' + p1.total + ' 완료</span> &nbsp;|&nbsp; 2단계: <span>' + p2.done + ' / ' + p2.total + ' 완료</span>';
     document.getElementById('modalOverlay').classList.add('open');
   }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-
-  document.getElementById('modalOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  document.getElementById('selName').addEventListener('change', function() {
-    document.getElementById('btnConfirm').disabled = !this.value;
-  });
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+  document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+  document.getElementById('selName').addEventListener('change', function() { document.getElementById('btnConfirm').disabled = !this.value; });
   document.getElementById('btnConfirm').disabled = true;
 
   /* ── Firebase 제출 ──────────────────────────────────────────── */
   async function submitReport() {
     const name = document.getElementById('selName').value;
     if (!name) return;
-
     const btn = document.getElementById('btnConfirm');
-    btn.disabled = true;
-    btn.textContent = '전송 중…';
-
-    const p1 = getProgress('phase1');
-    const p2 = getProgress('phase2');
-
-    const payload = {
-      name,
-      p1Done:  p1.done,
-      p1Total: p1.total,
-      p2Done:  p2.done,
-      p2Total: p2.total,
-      memo:    document.getElementById('txtMemo').value.trim(),
-      submittedAt: new Date().toISOString()
-    };
-
+    btn.disabled = true; btn.textContent = '전송 중…';
+    const p1 = getProgress('phase1'), p2 = getProgress('phase2');
     try {
-      const res = await fetch(FIREBASE_DB_URL + '/submissions.json', {
+      const res = await fetch(CONFIG.firebaseUrl + '/submissions.json', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ name, p1Done: p1.done, p1Total: p1.total, p2Done: p2.done, p2Total: p2.total, memo: document.getElementById('txtMemo').value.trim(), submittedAt: new Date().toISOString() })
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       closeModal();
@@ -766,8 +358,7 @@
       document.getElementById('btnConfirm').disabled = true;
     } catch (e) {
       alert('전송에 실패했습니다. 네트워크 상태를 확인해 주세요.\n(' + e.message + ')');
-      btn.disabled = false;
-      btn.textContent = '제출하기';
+      btn.disabled = false; btn.textContent = '제출하기';
     }
   }
 
