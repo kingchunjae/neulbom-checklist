@@ -120,5 +120,5 @@ const CONFIG = {
 
 ## 문의 및 원본 출처
 
-광주동초등학교 늘봄실무사 제작  
+광주동초등학교 늘봄연구사 제작  
 원본 저장소: [kingchunjae/neulbom-checklist](https://github.com/kingchunjae/neulbom-checklist)
