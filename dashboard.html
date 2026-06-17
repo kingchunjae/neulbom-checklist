@@ -28,155 +28,178 @@
     gap: 16px;
     flex-wrap: wrap;
   }
-  .header-left h1 {
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: -0.3px;
-  }
-  .header-left p {
-    font-size: 11px;
-    opacity: 0.8;
-    margin-top: 3px;
-  }
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .header-left h1 { font-size: 18px; font-weight: 900; letter-spacing: -0.3px; }
+  .header-left p  { font-size: 11px; opacity: 0.8; margin-top: 3px; }
+  .header-right   { display: flex; align-items: center; gap: 12px; }
   .live-dot {
-    width: 8px;
-    height: 8px;
-    background: #69f0ae;
-    border-radius: 50%;
-    animation: blink 1.5s infinite;
-    flex-shrink: 0;
+    width: 8px; height: 8px;
+    background: #69f0ae; border-radius: 50%;
+    animation: blink 1.5s infinite; flex-shrink: 0;
   }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-  .live-label {
-    font-size: 11px;
-    opacity: 0.85;
-  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  .live-label { font-size: 11px; opacity: 0.85; }
   .btn-refresh {
-    padding: 6px 14px;
-    border-radius: 6px;
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.35);
-    color: white;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 6px 14px; border-radius: 6px;
+    background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.35);
+    color: white; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
   }
   .btn-refresh:hover { background: rgba(255,255,255,0.3); }
   .btn-clear {
-    padding: 6px 14px;
-    border-radius: 6px;
-    background: rgba(255,80,80,0.25);
-    border: 1px solid rgba(255,120,120,0.4);
-    color: white;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 6px 14px; border-radius: 6px;
+    background: rgba(255,80,80,0.25); border: 1px solid rgba(255,120,120,0.4);
+    color: white; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
   }
   .btn-clear:hover { background: rgba(255,80,80,0.4); }
 
-  /* 요약 통계 */
-  .stats-row {
-    display: flex;
-    gap: 12px;
-    padding: 16px 28px;
-    flex-wrap: wrap;
-  }
-  .stat-card {
+  /* ── 전체 진행률 바 ── */
+  .overall-bar-wrap {
     background: white;
-    border-radius: 10px;
-    padding: 14px 20px;
-    flex: 1;
-    min-width: 130px;
+    margin: 16px 28px 0;
+    border-radius: 12px;
+    padding: 16px 20px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    text-align: center;
   }
-  .stat-card .num {
-    font-size: 28px;
+  .overall-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .overall-bar-header .overall-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+  }
+  .overall-bar-header .overall-fraction {
+    font-size: 22px;
     font-weight: 900;
+    color: #2e7d52;
     line-height: 1;
-    margin-bottom: 4px;
   }
-  .stat-card .lbl {
+  .overall-bar-header .overall-fraction span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #999;
+  }
+  .overall-track {
+    height: 12px;
+    background: #e8f5e9;
+    border-radius: 99px;
+    overflow: hidden;
+    position: relative;
+  }
+  .overall-fill-all {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: linear-gradient(90deg, #2e7d52, #5cb88a);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+  }
+  .overall-fill-part {
+    position: absolute; top: 0; height: 100%;
+    background: linear-gradient(90deg, #e07a20, #f5b060);
+    border-radius: 99px;
+    transition: width 0.6s ease, left 0.6s ease;
+    opacity: 0.6;
+  }
+  .overall-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
     font-size: 11px;
     color: #888;
-    font-weight: 500;
   }
+  .overall-legend span { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-all  { background: #2e7d52; }
+  .dot-part { background: #e07a20; opacity: 0.8; }
+  .dot-none { background: #ddd; }
+
+  /* ── 날짜 탭 ── */
+  .date-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 16px 28px 4px;
+    flex-wrap: wrap;
+  }
+  .date-tab {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid #ddd;
+    background: white;
+    color: #888;
+    transition: all 0.15s;
+  }
+  .date-tab:hover { border-color: #2e7d52; color: #2e7d52; }
+  .date-tab.active {
+    background: #2e7d52;
+    border-color: #2e7d52;
+    color: white;
+  }
+  .date-tab .tab-count {
+    display: inline-block;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0 6px;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+  .date-tab.active .tab-count { background: rgba(255,255,255,0.25); }
+
+  /* 요약 통계 */
+  .stats-row {
+    display: flex; gap: 12px;
+    padding: 12px 28px; flex-wrap: wrap;
+  }
+  .stat-card {
+    background: white; border-radius: 10px; padding: 14px 20px;
+    flex: 1; min-width: 130px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center;
+  }
+  .stat-card .num { font-size: 28px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+  .stat-card .lbl { font-size: 11px; color: #888; font-weight: 500; }
   .stat-card.total .num  { color: #333; }
   .stat-card.done .num   { color: #2e7d52; }
   .stat-card.partial .num { color: #e07a20; }
   .stat-card.none .num   { color: #bbb; }
 
   /* 업데이트 시각 */
-  .updated-bar {
-    padding: 0 28px 10px;
-    font-size: 11px;
-    color: #999;
-  }
+  .updated-bar { padding: 0 28px 10px; font-size: 11px; color: #999; }
 
   /* 섹션 타이틀 */
   .section-title {
     padding: 4px 28px 10px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #555;
-    letter-spacing: 0.3px;
+    font-size: 12px; font-weight: 700; color: #555; letter-spacing: 0.3px;
   }
+  .section-wrap { display: block; }
+  .section-wrap.hidden { display: none; }
 
   /* 강사 카드 그리드 */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-    padding: 0 28px 32px;
+    gap: 12px; padding: 0 28px 32px;
   }
-
   .instructor-card {
-    background: white;
-    border-radius: 10px;
-    padding: 16px;
+    background: white; border-radius: 10px; padding: 16px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     border-left: 4px solid #e0e0e0;
     transition: box-shadow 0.15s;
   }
   .instructor-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); }
-
   .instructor-card.status-all  { border-left-color: #2e7d52; }
   .instructor-card.status-part { border-left-color: #e07a20; }
   .instructor-card.status-none { border-left-color: #e0e0e0; }
 
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  .card-name {
-    font-size: 15px;
-    font-weight: 900;
-    color: #1a1a2e;
-  }
-  .card-school {
-    font-size: 10px;
-    color: #999;
-    margin-top: 2px;
-  }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .card-name  { font-size: 15px; font-weight: 900; color: #1a1a2e; }
+  .card-school { font-size: 10px; color: #999; margin-top: 2px; }
   .status-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 10px;
-    white-space: nowrap;
-    flex-shrink: 0;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0;
   }
   .badge-all  { background: #e8f5e9; color: #2e7d52; }
   .badge-part { background: #fff3e0; color: #e07a20; }
@@ -184,70 +207,26 @@
 
   /* 미니 진행 바 */
   .mini-bars { display: flex; flex-direction: column; gap: 6px; }
-  .mini-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: #777;
-  }
+  .mini-bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #777; }
   .mini-bar-label { width: 36px; flex-shrink: 0; }
-  .mini-bar-track {
-    flex: 1;
-    height: 5px;
-    background: #eee;
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .mini-bar-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.5s;
-  }
+  .mini-bar-track { flex: 1; height: 5px; background: #eee; border-radius: 99px; overflow: hidden; }
+  .mini-bar-fill  { height: 100%; border-radius: 99px; transition: width 0.5s; }
   .fill-1 { background: linear-gradient(90deg, #2e7d52, #5cb88a); }
   .fill-2 { background: linear-gradient(90deg, #b85c00, #e07a20); }
   .mini-bar-count { width: 40px; text-align: right; font-size: 10px; flex-shrink: 0; }
 
   /* 메모 */
   .card-memo {
-    margin-top: 10px;
-    padding: 7px 10px;
-    background: #f9f9f9;
-    border-radius: 6px;
-    font-size: 11px;
-    color: #555;
-    line-height: 1.6;
+    margin-top: 10px; padding: 7px 10px;
+    background: #f9f9f9; border-radius: 6px;
+    font-size: 11px; color: #555; line-height: 1.6;
     border-left: 2px solid #ddd;
   }
-
-  /* 제출 시각 */
-  .card-time {
-    margin-top: 8px;
-    font-size: 10px;
-    color: #bbb;
-    text-align: right;
-  }
-
-  /* 미제출 카드 */
+  .card-time { margin-top: 8px; font-size: 10px; color: #bbb; text-align: right; }
   .card-waiting {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    font-size: 12px;
-    color: #ccc;
-    font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    height: 60px; font-size: 12px; color: #ccc; font-weight: 500;
   }
-
-  /* 빈 상태 */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 48px 24px;
-    color: #bbb;
-  }
-  .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
-  .empty-state p { font-size: 13px; }
 
   /* 태블릿 */
   @media (max-width: 768px) {
@@ -261,15 +240,19 @@
     .header-right { width: 100%; justify-content: space-between; }
     .btn-refresh, .btn-clear { font-size: 11px; padding: 5px 10px; }
 
-    .stats-row { padding: 12px 14px; gap: 8px; }
+    .overall-bar-wrap { margin: 12px 14px 0; }
+    .overall-bar-header .overall-fraction { font-size: 18px; }
+
+    .date-tabs { padding: 12px 14px 4px; gap: 6px; }
+    .date-tab  { padding: 5px 12px; font-size: 11px; }
+
+    .stats-row { padding: 10px 14px; gap: 8px; }
     .stat-card { min-width: calc(50% - 4px); flex: none; padding: 12px 10px; }
     .stat-card .num { font-size: 24px; }
 
     .grid { grid-template-columns: 1fr; gap: 10px; padding: 0 14px 24px; }
     .section-title, .updated-bar { padding-left: 14px; padding-right: 14px; }
-
     .card-name { font-size: 14px; }
-    .status-badge { font-size: 10px; }
   }
 </style>
 </head>
@@ -288,8 +271,38 @@
   </div>
 </div>
 
+<!-- 전체 진행률 바 -->
+<div class="overall-bar-wrap">
+  <div class="overall-bar-header">
+    <span class="overall-title" id="overallTitle">전체 강사 준비 현황</span>
+    <span class="overall-fraction">
+      <span id="overallDone">0</span>
+      <span> / <span id="overallTotal">0</span>명 완료</span>
+    </span>
+  </div>
+  <div class="overall-track">
+    <div class="overall-fill-part" id="overallFillPart" style="width:0%"></div>
+    <div class="overall-fill-all"  id="overallFillAll"  style="width:0%"></div>
+  </div>
+  <div class="overall-legend">
+    <span><div class="dot dot-all"></div>전체 완료</span>
+    <span><div class="dot dot-part"></div>일부 완료</span>
+    <span><div class="dot dot-none"></div>미제출</span>
+  </div>
+</div>
+
+<!-- 날짜 탭 -->
+<div class="date-tabs">
+  <button class="date-tab active" data-date="all"  onclick="selectTab(this)">전체 <span class="tab-count" id="cnt-all"></span></button>
+  <button class="date-tab"        data-date="06/22" onclick="selectTab(this)">6/22(월) <span class="tab-count" id="cnt-0622"></span></button>
+  <button class="date-tab"        data-date="06/23" onclick="selectTab(this)">6/23(화) <span class="tab-count" id="cnt-0623"></span></button>
+  <button class="date-tab"        data-date="06/25" onclick="selectTab(this)">6/25(목) <span class="tab-count" id="cnt-0625"></span></button>
+  <button class="date-tab"        data-date="06/26" onclick="selectTab(this)">6/26(금) <span class="tab-count" id="cnt-0626"></span></button>
+</div>
+
+<!-- 요약 통계 -->
 <div class="stats-row">
-  <div class="stat-card total"><div class="num" id="statTotal">—</div><div class="lbl">전체 강사</div></div>
+  <div class="stat-card total"><div class="num" id="statTotal">—</div><div class="lbl">대상 강사</div></div>
   <div class="stat-card done"><div class="num" id="statDone">—</div><div class="lbl">전체 완료</div></div>
   <div class="stat-card partial"><div class="num" id="statPart">—</div><div class="lbl">일부 완료</div></div>
   <div class="stat-card none"><div class="num" id="statNone">—</div><div class="lbl">미제출</div></div>
@@ -297,90 +310,135 @@
 
 <div class="updated-bar" id="updatedBar">마지막 업데이트: —</div>
 
-<div class="section-title">▶ 본교</div>
-<div class="grid" id="grid-main"></div>
+<!-- 본교 -->
+<div class="section-wrap" id="wrap-main">
+  <div class="section-title">▶ 본교</div>
+  <div class="grid" id="grid-main"></div>
+</div>
 
-<div class="section-title">▶ 분교 (충효분교장)</div>
-<div class="grid" id="grid-branch"></div>
+<!-- 분교 -->
+<div class="section-wrap" id="wrap-branch">
+  <div class="section-title">▶ 분교 (충효분교장)</div>
+  <div class="grid" id="grid-branch"></div>
+</div>
 
 <script>
-  /* ── Firebase 설정 ────────────────────────────────────────────
-     index.html 과 동일한 URL로 교체하세요.
-  ──────────────────────────────────────────────────────────── */
   const FIREBASE_DB_URL = 'https://neulbom-checklist-default-rtdb.asia-southeast1.firebasedatabase.app';
 
   const INSTRUCTORS = {
     main: [
-      { name: '김지현',  program: '영어문화부' },
-      { name: '유연경',  program: '바이올린부' },
-      { name: '안지유',  program: '바이올린부' },
-      { name: '이준철',  program: 'AI융합부' },
-      { name: '이수민',  program: '미션클리어' },
-      { name: '한영미',  program: '피아노부' },
-      { name: '박소현',  program: '피아노부' },
-      { name: '송윤기',  program: '뉴스포츠부' },
-      { name: '박선하',  program: '미술부' },
-      { name: '최성은',  program: '초등돌봄교실' },
+      { name: '김지현', program: '영어문화부',   dates: ['06/22'] },
+      { name: '유연경', program: '바이올린부',   dates: ['06/22'] },
+      { name: '안지유', program: '바이올린부',   dates: ['06/22'] },
+      { name: '이준철', program: 'AI융합부',     dates: ['06/22'] },
+      { name: '최성은', program: '초등돌봄교실', dates: ['06/22'] },
+      { name: '한영미', program: '피아노부',     dates: ['06/23'] },
+      { name: '박소현', program: '피아노부',     dates: ['06/23'] },
+      { name: '송윤기', program: '뉴스포츠부',   dates: ['06/23'] },
+      { name: '박선하', program: '미술부',       dates: ['06/23'] },
+      { name: '이수민', program: '미션클리어',   dates: ['06/26'] },
     ],
     branch: [
-      { name: '박미연',  program: '영어문화부' },
-      { name: '신서현',  program: '독서논술부' },
-      { name: '박지은',  program: '풍물부' },
-      { name: '나경관',  program: 'AI융합부' },
-      { name: '김선자',  program: '미술부' },
-      { name: '박정하',  program: '두근두근 디지털' },
-      { name: '정은경',  program: '초등돌봄교실' },
+      { name: '박미연', program: '영어문화부',        dates: ['06/22'] },
+      { name: '신서현', program: '독서논술부',        dates: ['06/22'] },
+      { name: '정은경', program: '초등돌봄교실',      dates: ['06/22'] },
+      { name: '박지은', program: '풍물부',            dates: ['06/23', '06/25'] },
+      { name: '김선자', program: '미술부',            dates: ['06/23'] },
+      { name: '박정하', program: '두근두근 디지털',   dates: ['06/25'] },
+      { name: '나경관', program: 'AI융합부',          dates: ['06/26'] },
     ]
   };
 
+  const ALL_INSTRUCTORS = [...INSTRUCTORS.main, ...INSTRUCTORS.branch];
   let allSubmissions = {};
+  let currentDate = 'all';
 
+  /* ── 유틸 ── */
   function formatTime(iso) {
     if (!iso) return '';
     const d = new Date(iso);
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    const hh = String(d.getHours()).padStart(2, '0');
-    const mi = String(d.getMinutes()).padStart(2, '0');
-    return mm + '/' + dd + ' ' + hh + ':' + mi;
+    return String(d.getMonth()+1).padStart(2,'0') + '/' +
+           String(d.getDate()).padStart(2,'0') + ' ' +
+           String(d.getHours()).padStart(2,'0') + ':' +
+           String(d.getMinutes()).padStart(2,'0');
   }
 
   function getLatestForName(name) {
     let latest = null;
     for (const key in allSubmissions) {
       const s = allSubmissions[key];
-      if (s.name === name) {
-        if (!latest || s.submittedAt > latest.submittedAt) latest = s;
-      }
+      if (s.name === name && (!latest || s.submittedAt > latest.submittedAt)) latest = s;
     }
     return latest;
   }
 
-  function pct(done, total) {
-    return total ? Math.round(done / total * 100) : 0;
-  }
+  function pct(done, total) { return total ? Math.round(done / total * 100) : 0; }
 
   function statusOf(s) {
     if (!s) return 'none';
-    const allDone = s.p1Done >= s.p1Total && s.p2Done >= s.p2Total;
-    const anyDone = s.p1Done > 0 || s.p2Done > 0;
-    return allDone ? 'all' : anyDone ? 'part' : 'none';
+    return (s.p1Done >= s.p1Total && s.p2Done >= s.p2Total) ? 'all'
+         : (s.p1Done > 0 || s.p2Done > 0) ? 'part' : 'none';
   }
 
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function filterByDate(list, date) {
+    if (date === 'all') return list;
+    return list.filter(i => i.dates.includes(date));
+  }
+
+  /* ── 날짜 탭 ── */
+  function selectTab(btn) {
+    document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentDate = btn.dataset.date;
+    renderAll();
+  }
+
+  function updateTabCounts() {
+    const dates = ['all', '06/22', '06/23', '06/25', '06/26'];
+    const ids   = ['cnt-all', 'cnt-0622', 'cnt-0623', 'cnt-0625', 'cnt-0626'];
+    dates.forEach((d, i) => {
+      const list = filterByDate(ALL_INSTRUCTORS, d);
+      const done = list.filter(ins => statusOf(getLatestForName(ins.name)) === 'all').length;
+      document.getElementById(ids[i]).textContent = done + '/' + list.length;
+    });
+  }
+
+  /* ── 전체 진행률 바 ── */
+  function updateOverallBar(filtered) {
+    const total = filtered.length;
+    let done = 0, part = 0;
+    for (const ins of filtered) {
+      const s = statusOf(getLatestForName(ins.name));
+      if (s === 'all') done++;
+      else if (s === 'part') part++;
+    }
+    const donePct = total ? done / total * 100 : 0;
+    const partPct = total ? part / total * 100 : 0;
+
+    document.getElementById('overallFillAll').style.width  = donePct + '%';
+    document.getElementById('overallFillPart').style.width = (donePct + partPct) + '%';
+    document.getElementById('overallDone').textContent  = done;
+    document.getElementById('overallTotal').textContent = total;
+
+    const label = currentDate === 'all' ? '전체 강사 준비 현황'
+                : currentDate.replace('06/', '6/') + ' 대상 강사 현황';
+    document.getElementById('overallTitle').textContent = label;
+  }
+
+  /* ── 카드 렌더 ── */
   function renderCard(instructor, school) {
     const s = getLatestForName(instructor.name);
     const status = statusOf(s);
     const badgeText  = { all: '✅ 전체완료', part: '🔶 진행중', none: '미제출' }[status];
-    const badgeClass = { all: 'badge-all', part: 'badge-part', none: 'badge-none' }[status];
-    const cardClass  = 'instructor-card status-' + status;
+    const badgeClass = { all: 'badge-all',   part: 'badge-part', none: 'badge-none' }[status];
 
-    let barsHtml = '';
-    let memoHtml = '';
-    let timeHtml = '';
-
+    let barsHtml = '', memoHtml = '', timeHtml = '';
     if (s) {
-      const p1 = pct(s.p1Done, s.p1Total);
-      const p2 = pct(s.p2Done, s.p2Total);
+      const p1 = pct(s.p1Done, s.p1Total), p2 = pct(s.p2Done, s.p2Total);
       barsHtml = `
         <div class="mini-bars">
           <div class="mini-bar-row">
@@ -401,7 +459,7 @@
     }
 
     return `
-      <div class="${cardClass}">
+      <div class="instructor-card status-${status}">
         <div class="card-top">
           <div>
             <div class="card-name">${escHtml(instructor.name)}</div>
@@ -409,49 +467,47 @@
           </div>
           <span class="status-badge ${badgeClass}">${badgeText}</span>
         </div>
-        ${barsHtml}
-        ${memoHtml}
-        ${timeHtml}
+        ${barsHtml}${memoHtml}${timeHtml}
       </div>`;
   }
 
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
+  /* ── 전체 렌더 ── */
   function renderAll() {
-    document.getElementById('grid-main').innerHTML =
-      INSTRUCTORS.main.map(i => renderCard(i, '본교')).join('');
-    document.getElementById('grid-branch').innerHTML =
-      INSTRUCTORS.branch.map(i => renderCard(i, '분교')).join('');
+    const filteredMain   = filterByDate(INSTRUCTORS.main,   currentDate);
+    const filteredBranch = filterByDate(INSTRUCTORS.branch, currentDate);
+    const filtered       = [...filteredMain, ...filteredBranch];
+
+    // 섹션 표시/숨김
+    document.getElementById('wrap-main').classList.toggle('hidden',   filteredMain.length === 0);
+    document.getElementById('wrap-branch').classList.toggle('hidden', filteredBranch.length === 0);
+
+    document.getElementById('grid-main').innerHTML   = filteredMain.map(i => renderCard(i, '본교')).join('') || '';
+    document.getElementById('grid-branch').innerHTML = filteredBranch.map(i => renderCard(i, '분교')).join('') || '';
 
     // 통계
-    const allList = [...INSTRUCTORS.main, ...INSTRUCTORS.branch];
     let done = 0, part = 0, none = 0;
-    for (const ins of allList) {
+    for (const ins of filtered) {
       const s = statusOf(getLatestForName(ins.name));
       if (s === 'all') done++;
       else if (s === 'part') part++;
       else none++;
     }
-    document.getElementById('statTotal').textContent = allList.length;
+    document.getElementById('statTotal').textContent = filtered.length;
     document.getElementById('statDone').textContent  = done;
     document.getElementById('statPart').textContent  = part;
     document.getElementById('statNone').textContent  = none;
-    document.getElementById('updatedBar').textContent =
-      '마지막 업데이트: ' + new Date().toLocaleTimeString('ko-KR');
+    document.getElementById('updatedBar').textContent = '마지막 업데이트: ' + new Date().toLocaleTimeString('ko-KR');
+
+    updateOverallBar(filtered);
+    updateTabCounts();
   }
 
+  /* ── Firebase ── */
   async function loadData() {
     try {
       const res = await fetch(FIREBASE_DB_URL + '/submissions.json');
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      allSubmissions = data || {};
+      allSubmissions = await res.json() || {};
       renderAll();
     } catch (e) {
       document.getElementById('updatedBar').textContent = '⚠️ 데이터 로드 실패: ' + e.message;
@@ -464,48 +520,31 @@
       await fetch(FIREBASE_DB_URL + '/submissions.json', { method: 'DELETE' });
       allSubmissions = {};
       renderAll();
-    } catch (e) {
-      alert('초기화 실패: ' + e.message);
-    }
+    } catch (e) { alert('초기화 실패: ' + e.message); }
   }
 
-  /* 실시간: Firebase SSE 스트림 */
   function startStream() {
-    const url = FIREBASE_DB_URL + '/submissions.json';
-    const es = new EventSource(url);
+    const es = new EventSource(FIREBASE_DB_URL + '/submissions.json');
     es.addEventListener('put', (e) => {
       try {
         const msg = JSON.parse(e.data);
-        if (msg.path === '/') {
-          allSubmissions = msg.data || {};
-        } else {
+        if (msg.path === '/') { allSubmissions = msg.data || {}; }
+        else {
           const key = msg.path.replace('/', '');
-          if (msg.data === null) {
-            delete allSubmissions[key];
-          } else {
-            allSubmissions[key] = msg.data;
-          }
+          if (msg.data === null) delete allSubmissions[key];
+          else allSubmissions[key] = msg.data;
         }
         renderAll();
       } catch {}
     });
     es.addEventListener('patch', (e) => {
-      try {
-        const msg = JSON.parse(e.data);
-        Object.assign(allSubmissions, msg.data || {});
-        renderAll();
-      } catch {}
+      try { Object.assign(allSubmissions, JSON.parse(e.data).data || {}); renderAll(); } catch {}
     });
-    es.onerror = () => {
-      // SSE 끊기면 30초 후 폴링으로 보완
-      setTimeout(loadData, 30000);
-    };
+    es.onerror = () => setTimeout(loadData, 30000);
   }
 
   startStream();
-  // SSE 연결 전 초기 1회 로드
   loadData();
-  // 30초마다 폴링으로 보완
   setInterval(loadData, 30000);
 </script>
 </body>
